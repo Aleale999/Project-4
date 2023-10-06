@@ -1,5 +1,5 @@
 
-from rest_framework.generics import GenericAPIView, ListCreateAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 from .models import Board
 
@@ -15,3 +15,5 @@ class BoardView(GenericAPIView):
 class BoardViewList(BoardView, ListCreateAPIView):
   pass
   
+class BoardDetailView(BoardView, RetrieveUpdateDestroyAPIView):
+  pass
