@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'board',
 ]
 
 MIDDLEWARE = [
@@ -80,11 +82,11 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DATABASE_NAME')
+        'NAME': env('DATABASE_NAME'),
         'HOST': 'localhost',
         'PORT': 5432,
-        'USER': env('DATABASE_USER')
-        'PASSWORD': env('DATABASE_PASSWORD')
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
     }
 }
 
