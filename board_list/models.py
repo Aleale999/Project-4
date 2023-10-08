@@ -4,11 +4,14 @@ from django.db import models
 
 class BoardList(models.Model):
   name = models.CharField()
-  list = models.ForeignKey(
-        'board.Board',
-        related_name='boardlist',
-        on_delete=models.CASCADE
-    )
-
-  def __str__(self):
-    return self.name
+  owner = models.ForeignKey(
+    'users.User',
+    related_name='boardlist',
+    on_delete=models.DO_NOTHING,
+    null=True
+  )
+  board = models.ForeignKey(
+    'board.Board',
+    related_name='boardlist',
+    on_delete=models.CASCADE
+  )

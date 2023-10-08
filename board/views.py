@@ -20,5 +20,5 @@ class BoardViewList(BoardView, UserBoardCreateAPIView):
   permission_classes=[IsCollaborator]
 
 class BoardDetailView(BoardView, RetrieveUpdateDestroyAPIView):
-  pass
+  permission_classes=[IsCollaborator]
 
