@@ -1,6 +1,6 @@
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
-from .models import Card
+from .models import Comment
 
 from lib.views import UserBoardCreateAPIView
 
@@ -8,16 +8,16 @@ from rest_framework.permissions import IsAuthenticated
 
 from lib.permissions import IsCollaborator, IsOwner
 
-from .serializers.common import CardSerializer
+from .serializers.common import CommentSerializer
 
 # Create your views here.
 
-class CardView(GenericAPIView):
-    queryset = Card.objects.all()
-    serializer_class=CardSerializer
+class CommentView(GenericAPIView):
+    queryset = Comment.objects.all()
+    serializer_class=CommentSerializer
 
-class CardListView(CardView, UserBoardCreateAPIView):
+class CommentListView(CommentView, UserBoardCreateAPIView):
   permission_classes=[IsCollaborator]
 
-class CardListDetailView(CardView, RetrieveUpdateDestroyAPIView):
+class CommentListDetailView(CommentView, RetrieveUpdateDestroyAPIView):
   permission_classes=[IsCollaborator]
