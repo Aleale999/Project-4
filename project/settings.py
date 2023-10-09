@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'board_list',
     'cards',
     'comments',
+    'labels',
     'users',
 ]
 

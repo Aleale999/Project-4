@@ -1,6 +1,6 @@
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
-from .models import BoardList
+from .models import Label
 
 from lib.views import UserBoardCreateAPIView
 
@@ -8,19 +8,16 @@ from rest_framework.permissions import IsAuthenticated
 
 from lib.permissions import IsCollaborator, IsOwner
 
-from .serializers.common import BoardListSerializer
-
-
-
+from .serializers.common import LabelSerializer
 
 # Create your views here.
 
-class BoardListView(GenericAPIView):
-    queryset = BoardList.objects.all()
-    serializer_class=BoardListSerializer
+class LabelView(GenericAPIView):
+    queryset = Label.objects.all()
+    serializer_class=LabelSerializer
 
-class BoardViewList(BoardListView, UserBoardCreateAPIView):
+class LabelListView(LabelView, UserBoardCreateAPIView):
   permission_classes=[IsCollaborator]
 
-class BoardListDetailView(BoardListView, RetrieveUpdateDestroyAPIView):
+class LabelListDetailView(LabelView, RetrieveUpdateDestroyAPIView):
   permission_classes=[IsCollaborator]

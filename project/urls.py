@@ -23,5 +23,6 @@ urlpatterns = [
     path('api/boardlists/', include('board_list.urls')),
     path('api/cards/', include('cards.urls')),
     path('api/comments/', include('comments.urls')),
+    path('api/labels/', include('labels.urls')),
     path('api/auth/', include('users.urls')),
 ]
