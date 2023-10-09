@@ -6,7 +6,7 @@ from lib.views import UserBoardCreateAPIView
 
 from rest_framework.permissions import IsAuthenticated
 
-from lib.permissions import IsCollaborator, IsOwner
+from lib.permissions import IsOwner
 
 from .serializers.common import CommentSerializer
 
@@ -17,7 +17,7 @@ class CommentView(GenericAPIView):
     serializer_class=CommentSerializer
 
 class CommentListView(CommentView, UserBoardCreateAPIView):
-  permission_classes=[IsCollaborator]
+  permission_classes=[IsOwner]
 
 class CommentListDetailView(CommentView, RetrieveUpdateDestroyAPIView):
-  permission_classes=[IsCollaborator]
+  permission_classes=[IsOwner]

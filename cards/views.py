@@ -6,7 +6,7 @@ from lib.views import UserBoardCreateAPIView
 
 from rest_framework.permissions import IsAuthenticated
 
-from lib.permissions import IsCollaborator, IsOwner
+from lib.permissions import IsOwner
 
 from .serializers.common import CardSerializer
 
@@ -17,7 +17,7 @@ class CardView(GenericAPIView):
     serializer_class=CardSerializer
 
 class CardListView(CardView, UserBoardCreateAPIView):
-  permission_classes=[IsCollaborator]
+  permission_classes=[IsOwner]
 
 class CardListDetailView(CardView, RetrieveUpdateDestroyAPIView):
-  permission_classes=[IsCollaborator]
+  permission_classes=[IsOwner]

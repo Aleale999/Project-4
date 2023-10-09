@@ -2,11 +2,13 @@ import { useState } from 'react'
 import axios from 'axios'
 import { setToken } from '../lib/auth'
 
-export default function Login() {
+export default function Register() {
 
   const [formData, setFormData] = useState({
+    email: '',
     username: '',
     password: '',
+    password_confirmation: '',
   })
 
   const [message, setMessage] = useState('')
@@ -18,9 +20,8 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const { data } = await axios.post('/api/auth/login/', formData)
-      setToken('access-token', data.access)
-      setToken('refresh-token', data.refresh)
+      const { data } = await axios.post('/api/auth/register/', formData)
+      console.log(data)
       console.log('TOKENS ADDED TO STORAGE')
       setMessage('Login was successful')
     } catch (error) {
@@ -31,9 +32,13 @@ export default function Login() {
 
   return (
     <form onSubmit={handleSubmit}>
+      <input type="text" placeholder='email' name="email" value={formData.email} onChange={handleChange} />
+      <br />
       <input type="text" placeholder='username' name="username" value={formData.username} onChange={handleChange} />
       <br />
       <input type="password" placeholder='password' name="password" value={formData.password} onChange={handleChange}  />
+      <br />
+      <input type="password" placeholder='password confirmation' name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} />
       <br />
       {message && <p>{message}</p>}
       <input type="submit" value="Submit" />

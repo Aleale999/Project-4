@@ -22,5 +22,5 @@ class BoardListView(GenericAPIView):
 class BoardViewList(BoardListView, UserBoardCreateAPIView):
   permission_classes=[IsCollaborator]
 
-class BoardListDetailView(BoardListView, RetrieveUpdateDestroyAPIView):
-  permission_classes=[IsCollaborator]
+class BoardListDetailView(RetrieveUpdateDestroyAPIView):
+  permission_classes=[IsOwner]

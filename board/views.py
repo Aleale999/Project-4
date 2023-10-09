@@ -1,11 +1,11 @@
 
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView
 
 from .models import Board
 
 from lib.views import UserBoardCreateAPIView
 
-from lib.permissions import IsCollaborator, IsOwner
+from lib.permissions import IsOwner,IsCollaborator
 
 from .serializers.common import BoardSerializer
 
@@ -13,12 +13,16 @@ from .serializers.common import BoardSerializer
 # Create your views here.
 
 class BoardView(GenericAPIView):
-  queryset = Board.objects.all()
   serializer_class=BoardSerializer
-
+  permission_classes= [IsCollaborator]
+  
 class BoardViewList(BoardView, UserBoardCreateAPIView):
-  permission_classes=[IsCollaborator]
+  def get_queryset(self):
+    queryset1 = Board.objects.filter(owner = self.request.user)
+    queryset2 = Board.objects.filter(collaborators = self.request.user)
+    model_combination = queryset1.union(queryset2)
+    return model_combination
 
 class BoardDetailView(BoardView, RetrieveUpdateDestroyAPIView):
-  permission_classes=[IsCollaborator]
-
+  pass
+  
