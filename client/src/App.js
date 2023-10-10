@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
 import Navbar from './components/Nav'
 import axiosAuth from './lib/axios'
 import Landing from './components/Landing'
+import Boardpage from './components/Boardpage'
 
 export default function App() {
 
@@ -32,6 +33,8 @@ export default function App() {
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path='/' element={<Landing />} />
+            <Route path='/board/:lk' element={<Boardpage />} />
+            <Route path='/board/:lk/:ck' element={<Boardpage />} />
           </Routes>
         </main>
       </BrowserRouter>

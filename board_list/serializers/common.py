@@ -3,5 +3,5 @@ from ..models import BoardList
 
 class BoardListSerializer(serializers.ModelSerializer):
   class Meta:
-    model=BoardList
+    model = BoardList
     fields='__all__'

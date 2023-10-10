@@ -13,8 +13,11 @@ from .serializers.common import CardSerializer
 # Create your views here.
 
 class CardView(GenericAPIView):
-    queryset = Card.objects.all()
     serializer_class=CardSerializer
+    def get_queryset(self):
+      id = self.get_exception_handler_context().get('kwargs').get('pk')
+      queryset = Card.objects.filter(board_id__exact=id)
+      return queryset
 
 class CardListView(CardView, UserBoardCreateAPIView):
   permission_classes=[IsOwner]

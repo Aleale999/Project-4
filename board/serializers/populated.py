@@ -5,4 +5,4 @@ from board_list.serializers.common import BoardListSerializer
 #   collaborators = CollaboratorsSerializer(many=True)
 
 class PopulatedWithBoardList(BoardSerializer):
-  boardlist = BoardListSerializer(many=True)
+  boardlists = BoardListSerializer(many=True)

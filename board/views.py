@@ -10,6 +10,7 @@ from lib.permissions import IsOwner,IsCollaborator
 from .serializers.common import BoardSerializer
 
 
+
 # Create your views here.
 
 class BoardView(GenericAPIView):
@@ -25,4 +26,3 @@ class BoardViewList(BoardView, UserBoardCreateAPIView):
 
 class BoardDetailView(BoardView, RetrieveUpdateDestroyAPIView):
   pass
-  

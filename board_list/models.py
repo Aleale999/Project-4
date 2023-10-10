@@ -12,6 +12,6 @@ class BoardList(models.Model):
   )
   board = models.ForeignKey(
     'board.Board',
-    related_name='boardlist',
+    related_name='board',
     on_delete=models.CASCADE
   )
