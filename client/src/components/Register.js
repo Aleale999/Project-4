@@ -22,8 +22,7 @@ export default function Register() {
     try {
       const { data } = await axios.post('/api/auth/register/', formData)
       console.log(data)
-      console.log('TOKENS ADDED TO STORAGE')
-      setMessage('Login was successful')
+      setMessage('Register was successful')
     } catch (error) {
       console.log(error)
       setMessage(error.response.data.detail)

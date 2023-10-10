@@ -10,4 +10,3 @@ User = get_user_model()
 class RegisterView(CreateAPIView):
   queryset = User.objects.all()
   serializer_class = RegistrationSerializer
-  permission_classes=[IsOwner]

@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { setToken } from '../lib/auth'
+import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
+
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
     username: '',
@@ -23,6 +26,7 @@ export default function Login() {
       setToken('refresh-token', data.refresh)
       console.log('TOKENS ADDED TO STORAGE')
       setMessage('Login was successful')
+      navigate('/')
     } catch (error) {
       console.log(error)
       setMessage(error.response.data.detail)
