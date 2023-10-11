@@ -1,8 +1,8 @@
 from django.urls import path, include
-from .views import BoardViewList, BoardListDetailView
+from .views import BoardListViewList
 
 # Path: /api/reviews/
 urlpatterns = [
-    path('', BoardViewList.as_view()),
+    path('', BoardListViewList.as_view()),
     path('<int:pk>/', include('cards.urls')),
 ]

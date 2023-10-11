@@ -16,7 +16,7 @@ class CardView(GenericAPIView):
     serializer_class=CardSerializer
     def get_queryset(self):
       id = self.get_exception_handler_context().get('kwargs').get('pk')
-      queryset = Card.objects.filter(board_id__exact=id)
+      queryset = Card.objects.filter(boardlist_id__exact=id)
       return queryset
 
 class CardListView(CardView, UserBoardCreateAPIView):

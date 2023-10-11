@@ -1,4 +1,4 @@
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView
 
 from .models import BoardList
 
@@ -15,7 +15,7 @@ from .serializers.common import BoardListSerializer
 
 # Create your views here.
 
-class BoardListView(GenericAPIView):
+class BoardListView(RetrieveUpdateAPIView):
     # allboardlists = BoardList.objects.all()
     # queryset = allboardlists.filter(board_id__exact = 2)
     serializer_class=BoardListSerializer
@@ -24,8 +24,11 @@ class BoardListView(GenericAPIView):
       queryset = BoardList.objects.filter(board_id__exact=id)
       return queryset
 
-class BoardViewList(BoardListView, UserBoardCreateAPIView):
-  permission_classes=[IsCollaborator]
+class BoardListViewList(BoardListView, UserBoardCreateAPIView):
+  permission_classes=[IsCollaborator, IsOwner]
+  def patch(self, request, *args, **kwargs):
+     name = self.get_object(request)
+     name.save()
 
 class BoardListDetailView(RetrieveUpdateDestroyAPIView):
   permission_classes=[IsOwner]

@@ -4,5 +4,5 @@ from .views import CardListView, CardListDetailView
 
 # Path: /api/reviews/
 urlpatterns = [
-    path('<int:pk>/', CardListView.as_view()),
+    path('', CardListView.as_view()),
 ]

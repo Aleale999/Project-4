@@ -15,7 +15,7 @@ from .serializers.common import BoardSerializer
 
 class BoardView(GenericAPIView):
   serializer_class=BoardSerializer
-  permission_classes= [IsCollaborator]
+  permission_classes= [IsCollaborator, IsOwner]
   
 class BoardViewList(BoardView, UserBoardCreateAPIView):
   def get_queryset(self):
