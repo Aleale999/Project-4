@@ -1,8 +1,6 @@
 from .common import BoardSerializer
-from board_list.serializers.common import BoardListSerializer
+from board_list.serializers.populated import PopulatedWithCards
 
-# class PopulatedWithCollaboratorsBoardSerializer(BoardSerializer):
-#   collaborators = CollaboratorsSerializer(many=True)
 
 class PopulatedWithBoardList(BoardSerializer):
-  boardlists = BoardListSerializer(many=True)
+  lists = PopulatedWithCards(many=True)
