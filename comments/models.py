@@ -12,6 +12,6 @@ class Comment(models.Model):
   )
   card = models.ForeignKey(
     'cards.Card',
-    related_name='comment',
+    related_name='comments',
     on_delete=models.CASCADE
   )

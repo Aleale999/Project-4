@@ -27,6 +27,7 @@ class BoardListViewList(BoardListView, UserBoardCreateAPIView):
   queryset = BoardList.objects.all()
 
 class BoardListDetailView(BoardListView, RetrieveUpdateDestroyAPIView):
+  serializer_class = PopulatedWithCards
   def get_queryset(self):
     id = self.get_exception_handler_context().get('kwargs').get('pk')
     print(id)

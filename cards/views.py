@@ -9,18 +9,22 @@ from rest_framework.permissions import IsAuthenticated
 from lib.permissions import IsCollaboratorOrOwner
 
 from .serializers.common import CardSerializer
+from .serializers.populated import PopulatedWithComments
 
 # Create your views here.
 
-class CardView(GenericAPIView):
-    serializer_class=CardSerializer
-    def get_queryset(self):
-      id = self.get_exception_handler_context().get('kwargs').get('pk')
-      queryset = Card.objects.filter(boardlist_id__exact=id)
-      return queryset
+class CardListView(GenericAPIView):
+  serializer_class=CardSerializer
+  # permission_classes=[IsCollaboratorOrOwner]
+  
 
-class CardListView(CardView, UserBoardCreateAPIView):
-  permission_classes=[IsCollaboratorOrOwner]
+class CardListViewList(CardListView, UserBoardCreateAPIView):
+  queryset = Card.objects.all()
 
-class CardListDetailView(CardView, RetrieveUpdateDestroyAPIView):
-  permission_classes=[IsCollaboratorOrOwner]
+class CardListDetailView(CardListView, RetrieveUpdateDestroyAPIView):
+  serializer_class = PopulatedWithComments
+  def get_queryset(self):
+    id = self.get_exception_handler_context().get('kwargs').get('pk')
+    print(id)
+    queryset = Card.objects.filter(id__exact=id)
+    return queryset

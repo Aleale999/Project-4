@@ -1,8 +1,8 @@
 from django.urls import path
 
-from .views import CardListView, CardListDetailView
+from .views import CardListViewList, CardListDetailView
 
-# Path: /api/reviews/
 urlpatterns = [
-    path('', CardListView.as_view()),
+    path('', CardListViewList.as_view()),
+    path('<int:pk>/', CardListDetailView.as_view()),
 ]

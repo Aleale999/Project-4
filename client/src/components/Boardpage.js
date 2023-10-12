@@ -13,6 +13,8 @@ export default function Boardpage(){
   const [title, setTitle] = useState()
   const [cards, setCards] = useState()
   const [editList, setEditList] = useState([])
+  const [appearList, setAppearList] = useState(false)
+  const [appearCard, setAppearCard] = useState()
 
   useEffect(() => {
     async function getData(){
@@ -26,6 +28,9 @@ export default function Boardpage(){
         setCk(data && data.lists.map((lists) => {
           return lists.id
         }))
+        data.lists && setAppearCard(data.lists.map(({ cards }) => {
+          return false
+        }))
         ck && console.log(ck)
       } catch (error) {
         console.log(error.message)
@@ -33,6 +38,39 @@ export default function Boardpage(){
     }
     getData()
   }, [])
+
+  function createList(){
+    setAppearList(!appearList)
+    console.log('Created List')
+  }
+  function submittedList(e){
+    setAppearList(false)
+    console.log('Hit submit List')
+  }
+
+  function createCard(e, i){
+    e.preventDefault()
+    console.log('Hit create Card in List => ', ck[i])
+    setAppearCard(appearCard && appearCard.map((card,j) => {
+      if (i === j){
+        return !card
+      } else {
+        return (card)
+      }
+    }))
+  }
+  function submittedCard(e,i){
+    e.preventDefault()
+    setAppearCard(appearCard && appearCard.map((card,j) => {
+      if (i === j){
+        return !card
+      } else {
+        return (card)
+      }
+    }))
+    console.log('Hit submit Card')
+  }
+
 
   function handleChange(e,i){
     setEditList(e.target.value)
@@ -79,18 +117,24 @@ export default function Boardpage(){
                   return (
                     <div key={card.id}>
                       <p>
-                        {card ? ['"name of the card" => ', card.name,' , "colours" => ', card.colours, ' , "Status " => ', card.status ? 'true' : 'false' ] : 'This list is empty'}
+                        {card.id ? ['"name of the card" => ', card.name,' , "colours" => ', card.colours, ' , "Status " => ', card.status ? 'true' : 'false' ] : 'This list is empty'}
                       </p>
                     </div>
                   )
                 })}
               </form>
-              <button>Create new card</button>
+              <button onClick={e => createCard(e, i)}>Create new card</button>
+              <form onSubmit={e => submittedCard(e, i)}>
+                <input className={ appearCard[i] && appearCard[i] ? 'show' : 'hide'} placeholder='New card'></input>
+              </form>
             </>
           )
         })}
       </div>
-      <button>Create new list</button>
+      <button onClick={e => createList()}>Create new list</button>
+      <form onSubmit={e => submittedList(e)}>
+        <input className={appearList ? 'show' : 'hide'} placeholder='New list'></input>
+      </form>
     </>
   )
 }
