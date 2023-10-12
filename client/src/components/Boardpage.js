@@ -18,13 +18,11 @@ export default function Boardpage(){
     async function getData(){
       try {
         const { data } = await axiosAuth.get(`/api/board/${lk}/`)
-        console.log(data)
         setTitle(data.name)
         setLists(data.lists)
         data.lists && setCards(data.lists.map(({ cards }) => {
           return cards
         }))
-        console.log(data.lists[1])
         setCk(data && data.lists.map((lists) => {
           return lists.id
         }))
@@ -41,17 +39,30 @@ export default function Boardpage(){
   }
 
   function editlist(e,i){
-    console.log(ck[i])
-    ck[i] && axios.patch(`/api/boardlists/${ck[i]}/`, {
-      name: editList,
-    },
-    {
-      headers: {
-        'Authorization': `Bearer ${getToken('access-token')}`,
+    if (editList[0]) {
+      console.log('Edit List not empty')
+      ck[i] && axios.patch(`/api/boardlists/${ck[i]}/`, {
+        name: editList,
       },
+      {
+        headers: {
+          'Authorization': `Bearer ${getToken('access-token')}`,
+        },
+      }
+      )
+      setEditList('')
+    } else {
+      console.log('Edit List empty')
+      ck[i] && axios.delete(`/api/boardlists/${ck[i]}/`, {
+        name: editList,
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${getToken('access-token')}`,
+        },
+      }
+      )
     }
-    )
-    setEditList('')
   }
 
   return (
