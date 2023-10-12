@@ -13,6 +13,8 @@ export default function Boardpage(){
   const [title, setTitle] = useState()
   const [cards, setCards] = useState()
   const [editList, setEditList] = useState([])
+  const [newList, setNewList] = useState('')
+  const [newCard, setNewCard] = useState('')
   const [appearList, setAppearList] = useState(false)
   const [appearCard, setAppearCard] = useState()
 
@@ -41,16 +43,25 @@ export default function Boardpage(){
 
   function createList(){
     setAppearList(!appearList)
-    console.log('Created List')
   }
   function submittedList(e){
+    if (newList) {
+      axios.post('/api/boardlists/', {
+        name: newList,
+        board: lk,
+      }, 
+      {
+        headers: {
+          'Authorization': `Bearer ${getToken('access-token')}`,
+        },
+      })
+    }
     setAppearList(false)
-    console.log('Hit submit List')
+    setNewList('')
   }
 
   function createCard(e, i){
     e.preventDefault()
-    console.log('Hit create Card in List => ', ck[i])
     setAppearCard(appearCard && appearCard.map((card,j) => {
       if (i === j){
         return !card
@@ -60,7 +71,16 @@ export default function Boardpage(){
     }))
   }
   function submittedCard(e,i){
-    e.preventDefault()
+    ck[i] && axios.post('/api/cards/', {
+      name: newCard,
+      boardlist: ck[i],
+    },
+    {
+      headers: {
+        'Authorization': `Bearer ${getToken('access-token')}`,
+      },
+    }
+    )
     setAppearCard(appearCard && appearCard.map((card,j) => {
       if (i === j){
         return !card
@@ -68,7 +88,6 @@ export default function Boardpage(){
         return (card)
       }
     }))
-    console.log('Hit submit Card')
   }
 
 
@@ -125,7 +144,7 @@ export default function Boardpage(){
               </form>
               <button onClick={e => createCard(e, i)}>Create new card</button>
               <form onSubmit={e => submittedCard(e, i)}>
-                <input className={ appearCard[i] && appearCard[i] ? 'show' : 'hide'} placeholder='New card'></input>
+                <input className={ appearCard[i] && appearCard[i] ? 'show' : 'hide'} onChange={e => setNewCard(e.target.value)} placeholder='New card'></input>
               </form>
             </>
           )
@@ -133,7 +152,7 @@ export default function Boardpage(){
       </div>
       <button onClick={e => createList()}>Create new list</button>
       <form onSubmit={e => submittedList(e)}>
-        <input className={appearList ? 'show' : 'hide'} placeholder='New list'></input>
+        <input className={appearList ? 'show' : 'hide'} value={newList && newList} onChange={e => setNewList(e.target.value)} placeholder='New list'></input>
       </form>
     </>
   )

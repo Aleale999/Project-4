@@ -15,5 +15,5 @@ class Card(models.Model):
     related_name='cards',
     on_delete=models.CASCADE
   )
-  colours = models.CharField(max_length=50)
+  colours = models.CharField(max_length=50, null=True)
   status = models.BooleanField(default=False)
