@@ -6,29 +6,29 @@ from lib.views import UserBoardCreateAPIView
 
 from rest_framework.permissions import IsAuthenticated
 
-from lib.permissions import IsCollaborator, IsOwner
+from lib.permissions import IsCollaboratorOrOwner
 
 from .serializers.common import BoardListSerializer
+from .serializers.populated import PopulatedWithCards
+
+from rest_framework.response import Response
 
 
 
 
 # Create your views here.
 
-class BoardListView(RetrieveUpdateAPIView):
-    # allboardlists = BoardList.objects.all()
-    # queryset = allboardlists.filter(board_id__exact = 2)
-    serializer_class=BoardListSerializer
-    def get_queryset(self):
-      id = self.get_exception_handler_context().get('kwargs').get('pk')
-      queryset = BoardList.objects.filter(board_id__exact=id)
-      return queryset
+class BoardListView(GenericAPIView):
+  serializer_class=BoardListSerializer
+  # permission_classes=[IsCollaboratorOrOwner]
+  
 
 class BoardListViewList(BoardListView, UserBoardCreateAPIView):
-  permission_classes=[IsCollaborator, IsOwner]
-  def patch(self, request, *args, **kwargs):
-     name = self.get_object(request)
-     name.save()
+  queryset = BoardList.objects.all()
 
-class BoardListDetailView(RetrieveUpdateDestroyAPIView):
-  permission_classes=[IsOwner]
+class BoardListDetailView(BoardListView, RetrieveUpdateDestroyAPIView):
+  def get_queryset(self):
+    id = self.get_exception_handler_context().get('kwargs').get('pk')
+    print(id)
+    queryset = BoardList.objects.filter(id__exact=id)
+    return queryset

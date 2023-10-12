@@ -1,7 +1,7 @@
 from rest_framework.generics import CreateAPIView
 from .serializers.common import RegistrationSerializer
 from django.contrib.auth import get_user_model
-from lib.permissions import IsOwner
+from lib.permissions import IsCollaboratorOrOwner
 
 User = get_user_model()
 

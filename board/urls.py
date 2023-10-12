@@ -1,9 +1,7 @@
 from .views import BoardViewList, BoardDetailView
-from django.urls import path,include
+from django.urls import path
 
 urlpatterns = [
   path('', BoardViewList.as_view()),
-  # path('<int:pk>/', include('board_list.urls')),
   path('<int:pk>/', BoardDetailView.as_view()),
-
 ]

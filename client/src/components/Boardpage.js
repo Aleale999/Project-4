@@ -7,9 +7,8 @@ import { getToken } from '../lib/auth'
 
 export default function Boardpage(){
   const { lk } = useParams()
-  let ck
 
-  const [board, setBoard] = useState()
+  const [ck, setCk] = useState()
   const [lists, setLists] = useState()
   const [title, setTitle] = useState()
   const [cards, setCards] = useState()
@@ -26,22 +25,10 @@ export default function Boardpage(){
           return cards
         }))
         console.log(data.lists[1])
-        ck = lists && lists.map((list) => {
-          return list.id
-        })
-        console.log(ck)
-        // const cards = await Promise.all(ck.map((cardId) => {
-        //   const promise = axiosAuth.get(`/api/board/${lk}/${cardId}/`)
-        //   return promise
-        // }))
-        // setCards(cards.map(card => (card.data && card.data)))
-
-        // setTitle(board && board.data.map((data,i) => {
-        //   if (data.id === parseInt(lk)) {
-        //     return data.name
-        //   }
-        // }))
-        // data && data.map((name) => editList.push(name.name))
+        setCk(data && data.lists.map((lists) => {
+          return lists.id
+        }))
+        ck && console.log(ck)
       } catch (error) {
         console.log(error.message)
       }
@@ -49,15 +36,14 @@ export default function Boardpage(){
     getData()
   }, [])
 
-  function handleChange(e){
+  function handleChange(e,i){
     setEditList(e.target.value)
   }
 
   function editlist(e,i){
-    e.preventDefault()
-    axios.patch(`/api/board/${lk}/${ck}`, {
-      pk: ck,
-      name: editList[i],
+    console.log(ck[i])
+    ck[i] && axios.patch(`/api/boardlists/${ck[i]}/`, {
+      name: editList,
     },
     {
       headers: {
@@ -65,6 +51,7 @@ export default function Boardpage(){
       },
     }
     )
+    setEditList('')
   }
 
   return (
@@ -75,7 +62,7 @@ export default function Boardpage(){
           return (
             <>
               <form key={i} onSubmit={e => editlist(e,i)}>
-                <input placeholder={list.name && list.name} value={(editList && editList)} onChange={e => handleChange(e)}></input>
+                <input id={i} placeholder={list.name && list.name} value={(editList && editList)} onChange={e => handleChange(e,i)}></input>
                 <button type='submit'>Save changes</button>
                 {cards[i] && cards[i].map((card) => {
                   return (

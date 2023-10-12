@@ -6,7 +6,7 @@ from lib.views import UserBoardCreateAPIView
 
 from rest_framework.permissions import IsAuthenticated
 
-from lib.permissions import IsOwner
+from lib.permissions import IsCollaboratorOrOwner
 
 from .serializers.common import LabelSerializer
 
@@ -17,7 +17,7 @@ class LabelView(GenericAPIView):
     serializer_class=LabelSerializer
 
 class LabelListView(LabelView, UserBoardCreateAPIView):
-  permission_classes=[IsOwner]
+  permission_classes=[IsCollaboratorOrOwner]
 
 class LabelListDetailView(LabelView, RetrieveUpdateDestroyAPIView):
-  permission_classes=[IsOwner]
+  permission_classes=[IsCollaboratorOrOwner]
