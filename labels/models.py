@@ -4,7 +4,7 @@ from django.db import models
 
 class Label(models.Model):
   name = models.CharField(max_length=50)
-  colour = models.CharField()
+  colour = models.CharField(max_length=255)
   card = models.ForeignKey(
     'cards.Card',
     related_name='labels',
