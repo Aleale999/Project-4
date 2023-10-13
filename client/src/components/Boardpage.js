@@ -17,6 +17,9 @@ export default function Boardpage(){
   const [newCard, setNewCard] = useState('')
   const [appearList, setAppearList] = useState(false)
   const [appearCard, setAppearCard] = useState()
+  const [collabForm, setCollabForm] = useState(false)
+  const [collabName, setCollabName] = useState('')
+  const [collabMessage, setCollabMessage] = useState('')
 
   useEffect(() => {
     async function getData(){
@@ -33,7 +36,6 @@ export default function Boardpage(){
         data.lists && setAppearCard(data.lists.map(({ cards }) => {
           return false
         }))
-        ck && console.log(ck)
       } catch (error) {
         console.log(error.message)
       }
@@ -122,15 +124,55 @@ export default function Boardpage(){
     }
   }
 
+  function showCollabForm() {
+    setCollabForm(!collabForm)
+  }
+
+  async function addedCollaborator(e) {
+    e.preventDefault()
+    setCollabMessage('')
+    console.log('Added collab => ', collabName)
+    const { data } = await axiosAuth.get('/api/auth/users/')
+    let id
+    data && data.map((user) => {
+      if (user.email === collabName) {
+        id = user.id
+      }
+    })
+    if (id) {
+      axios.patch('/api/board/6/collaborators/',{
+        collaborators: id,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${getToken('access-token')}`,
+        },
+      })
+    } else {
+      setCollabMessage('User Not Found')
+    }
+    setCollabName('')
+  }
+
+
   return (
     <>
       <div>
-        <h1 style={{ textTransform: 'uppercase' }}>{title && title}</h1>
+        <header>
+          <h1 style={{ textTransform: 'uppercase' }}>{title && title}</h1>
+          <div>
+            <button>Show collaborators</button>
+            <button onClick={e => showCollabForm()}>Add collaborator</button>
+            <form className={collabForm ? 'show' : 'hide'} onSubmit={e => addedCollaborator(e)}>
+              <input placeholder='Insert email here' type='email' value={collabName && collabName} autoComplete='off' onChange={e => (setCollabName(e.target.value), setCollabMessage(''))}></input>
+              {collabMessage && <p>{collabMessage}</p>}
+            </form>
+          </div>
+        </header>
         {lists && lists.map((list,i) => {
           return (
             <>
               <form key={i} onSubmit={e => editlist(e,i)}>
-                <input id={i} placeholder={list.name && list.name} value={(editList && editList)} onChange={e => handleChange(e,i)}></input>
+                <input id={i} placeholder={list.name && list.name} autoComplete='off' value={(editList && editList)} onChange={e => handleChange(e,i)}></input>
                 <button type='submit'>Save changes</button>
                 {cards[i] && cards[i].map((card) => {
                   return (
@@ -144,7 +186,7 @@ export default function Boardpage(){
               </form>
               <button onClick={e => createCard(e, i)}>Create new card</button>
               <form onSubmit={e => submittedCard(e, i)}>
-                <input className={ appearCard[i] && appearCard[i] ? 'show' : 'hide'} onChange={e => setNewCard(e.target.value)} placeholder='New card'></input>
+                <input className={ appearCard[i] && appearCard[i] ? 'show' : 'hide'} autoComplete='off' onChange={e => setNewCard(e.target.value)} placeholder='New card'></input>
               </form>
             </>
           )
@@ -152,7 +194,7 @@ export default function Boardpage(){
       </div>
       <button onClick={e => createList()}>Create new list</button>
       <form onSubmit={e => submittedList(e)}>
-        <input className={appearList ? 'show' : 'hide'} value={newList && newList} onChange={e => setNewList(e.target.value)} placeholder='New list'></input>
+        <input className={appearList ? 'show' : 'hide'} value={newList && newList} autoComplete='off' onChange={e => setNewList(e.target.value)} placeholder='New list'></input>
       </form>
     </>
   )

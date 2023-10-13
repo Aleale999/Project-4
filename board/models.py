@@ -12,7 +12,7 @@ class Board(models.Model):
   )
   collaborators = models.ManyToManyField(
       'users.User',
-      related_name='Collaborators_board',
+      related_name='collaborators',
       blank=True
   )
 

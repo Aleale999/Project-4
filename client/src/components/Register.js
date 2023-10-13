@@ -31,13 +31,13 @@ export default function Register() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input type="text" placeholder='email' name="email" value={formData.email} onChange={handleChange} />
+      <input autoComplete='off' type="text" placeholder='email' name="email" value={formData.email} onChange={handleChange} />
       <br />
-      <input type="text" placeholder='username' name="username" value={formData.username} onChange={handleChange} />
+      <input autoComplete='off' type="text" placeholder='username' name="username" value={formData.username} onChange={handleChange} />
       <br />
-      <input type="password" placeholder='password' name="password" value={formData.password} onChange={handleChange}  />
+      <input autoComplete='off' type="password" placeholder='password' name="password" value={formData.password} onChange={handleChange}  />
       <br />
-      <input type="password" placeholder='password confirmation' name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} />
+      <input autoComplete='off' type="password" placeholder='password confirmation' name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} />
       <br />
       {message && <p>{message}</p>}
       <input type="submit" value="Submit" />

@@ -1,9 +1,11 @@
 
-from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView, ListCreateAPIView
 
 from .models import Board
 
 from lib.views import UserBoardCreateAPIView
+
+from rest_framework.response import Response
 
 from lib.permissions import IsCollaboratorOrOwner
 
@@ -28,4 +30,15 @@ class BoardDetailView(RetrieveUpdateDestroyAPIView):
   queryset = Board.objects.all()
   permission_classes=[IsCollaboratorOrOwner]
 
-# class BoardCollaboratorView()
+class BoardCollaboratorView(UpdateAPIView):
+  serializer_class=BoardSerializer
+  queryset = Board.objects.all()
+  permission_classes=[IsCollaboratorOrOwner]
+  def patch(self, request, *args, **kwargs):
+    collaborator = self.request.data.get('collaborators')
+    board = self.get_object()
+    print(self.request.data)
+    print(type(collaborator))
+    board.collaborators.add(collaborator)
+    return Response(status=201)
+  

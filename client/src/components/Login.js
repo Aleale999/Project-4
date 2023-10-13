@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { setToken } from '../lib/auth'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Login() {
 
@@ -34,13 +34,16 @@ export default function Login() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" placeholder='username' name="username" value={formData.username} onChange={handleChange} />
-      <br />
-      <input type="password" placeholder='password' name="password" value={formData.password} onChange={handleChange}  />
-      <br />
-      {message && <p>{message}</p>}
-      <input type="submit" value="Submit" />
-    </form>
+    <>
+      <form onSubmit={handleSubmit}>
+        <input type="text" autoComplete='off' placeholder='username' name="username" value={formData.username} onChange={handleChange} />
+        <br />
+        <input type="password" autoComplete='off' placeholder='password' name="password" value={formData.password} onChange={handleChange}  />
+        <br />
+        {message && <p>{message}</p>}
+        <input type="submit" value="Submit" />
+      </form>
+      <Link to={'/register'}>Click here to register</Link>
+    </>
   )
 }
