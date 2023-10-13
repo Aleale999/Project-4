@@ -20,6 +20,12 @@ export default function Boardpage(){
   const [collabForm, setCollabForm] = useState(false)
   const [collabName, setCollabName] = useState('')
   const [collabMessage, setCollabMessage] = useState('')
+  
+  const [showEditList, setShowEditList] = useState(false)
+
+  const [editCard, setEditCard] = useState()
+  const [newEditCard, setNewEditCard] = useState()
+  const [showEditCard, setShowEditCard] = useState(false)
 
   useEffect(() => {
     async function getData(){
@@ -28,6 +34,9 @@ export default function Boardpage(){
         setTitle(data.name)
         setLists(data.lists)
         data.lists && setCards(data.lists.map(({ cards }) => {
+          return cards
+        }))
+        data.lists && setEditCard(data.lists.map(({ cards }) => {
           return cards
         }))
         setCk(data && data.lists.map((lists) => {
@@ -94,14 +103,18 @@ export default function Boardpage(){
 
 
   function handleChange(e,i){
-    setEditList(e.target.value)
+    e.preventDefault()
+    const newArray = [...lists]
+    newArray[i].name = e.target.value
+    console.log(newArray)
+    setLists(newArray)
   }
 
   function editlist(e,i){
-    if (editList[0]) {
+    if (lists[i].name[0]) {
       console.log('Edit List not empty')
       ck[i] && axios.patch(`/api/boardlists/${ck[i]}/`, {
-        name: editList,
+        name: lists[i].name,
       },
       {
         headers: {
@@ -122,6 +135,7 @@ export default function Boardpage(){
       }
       )
     }
+    setShowEditList(!showEditList)
   }
 
   function showCollabForm() {
@@ -153,6 +167,34 @@ export default function Boardpage(){
     setCollabName('')
   }
 
+  function clickedCheck(status){
+    console.log(status)
+  }
+
+  function clickEditButton(e){
+    e.preventDefault()
+    console.log(e.target.id)
+  }
+
+  function changeEditCard(e, i, j){
+    e.preventDefault()
+    const newArray = [...editCard]
+    newArray[i][j].name = e.target.value
+    setEditCard(newArray)
+  }
+
+  async function editedCard(e,i,j){
+    const id = editCard[i][j].id
+    await axios.patch(`/api/cards/${id}/`, {
+      name: editCard[i][j].name,
+    },
+    {
+      headers: {
+        'Authorization': `Bearer ${getToken('access-token')}`,
+      },
+    }
+    )
+  }
 
   return (
     <>
@@ -171,19 +213,32 @@ export default function Boardpage(){
         {lists && lists.map((list,i) => {
           return (
             <>
-              <form key={i} onSubmit={e => editlist(e,i)}>
-                <input id={i} placeholder={list.name && list.name} autoComplete='off' value={(editList && editList)} onChange={e => handleChange(e,i)}></input>
-                <button type='submit'>Save changes</button>
-                {cards[i] && cards[i].map((card) => {
-                  return (
-                    <div key={card.id}>
-                      <p>
-                        {card.id ? ['"name of the card" => ', card.name,' , "colours" => ', card.colours, ' , "Status " => ', card.status ? 'true' : 'false' ] : 'This list is empty'}
-                      </p>
-                    </div>
-                  )
-                })}
-              </form>
+              { showEditList ?
+                <form key={i} onSubmit={e => editlist(e,i)}>
+                  <input id={i} placeholder={list.name && list.name} autoComplete='off' value={(list.name && list.name)} onChange={e => handleChange(e,i)}></input>
+                  <button type='submit'>Save changes?</button>
+                </form> :
+                <div>
+                  <h3>{list.name}</h3>
+                  <button onClick={e => setShowEditList(!showEditList)}>✏️</button>
+                </div>
+              }
+              {cards[i] && cards[i].map((card,j) => {
+                return (
+                  <div key={card.id}>
+                    { showEditCard ?
+                      <form onSubmit={e => editedCard(e,i,j)}>
+                        <input placeholder={card && card.name} value={editCard && editCard[i][j].name} onChange={e => changeEditCard(e,i,j)}>
+                          {/* {card.id ? ['"name of the card" => ', card.name,' , "colours" => ', card.colours, ' , "Status " => ', card.status ? 'true' : 'false' ] : 'This list is empty'} */}
+                        </input>
+                        {/* <input type="checkbox" onClick={e => clickedCheck(card.status)}/> */}
+                        <button id={card.id} type='submit'>✏️</button>
+                      </form> :
+                      <p>{card.name}</p>
+                    }
+                  </div>
+                )
+              })}
               <button onClick={e => createCard(e, i)}>Create new card</button>
               <form onSubmit={e => submittedCard(e, i)}>
                 <input className={ appearCard[i] && appearCard[i] ? 'show' : 'hide'} autoComplete='off' onChange={e => setNewCard(e.target.value)} placeholder='New card'></input>

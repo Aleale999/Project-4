@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { setToken } from '../lib/auth'
+import { useNavigate } from 'react-router-dom'
 
 export default function Register() {
+
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
     email: '',
@@ -23,6 +26,7 @@ export default function Register() {
       const { data } = await axios.post('/api/auth/register/', formData)
       console.log(data)
       setMessage('Register was successful')
+      navigate('/')
     } catch (error) {
       console.log(error)
       setMessage(error.response.data.detail)

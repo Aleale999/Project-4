@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom'
 export default function Landing(){
 
   const [userData, setUserData] = useState()
-
   useEffect(() => {
     async function getData(){
       try {

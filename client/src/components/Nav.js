@@ -12,6 +12,7 @@ export default function Navigation() {
   const navigate = useNavigate()
 
   useEffect(() => {
+
     if (localStorage.getItem('access-token') !== null) {
       setIsAuth(true)
     } else {

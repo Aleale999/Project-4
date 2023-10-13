@@ -10,17 +10,7 @@ import Boardpage from './components/Boardpage'
 
 export default function App() {
 
-
-  useEffect(() => {
-    async function getData(){
-      try {
-        console.log(localStorage)
-      } catch (error) {
-        console.log(error.message)
-      }
-    }
-    getData()
-  }, [])
+  const token = localStorage.getItem('access-token')
 
   return (
     <>
