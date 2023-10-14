@@ -79,7 +79,6 @@ export default function Boardpage(){
     setAppearList(!appearList)
   }
   function submittedList(e){
-    e.preventDefault()
     if (newList) {
       axios.post('/api/boardlists/', {
         name: newList,
@@ -167,7 +166,6 @@ export default function Boardpage(){
   }
 
   async function addedCollaborator(e) {
-    e.preventDefault()
     setCollabMessage('')
     const { data } = await axiosAuth.get('/api/auth/users/')
     let id
@@ -176,8 +174,9 @@ export default function Boardpage(){
         id = user.id
       }
     })
+    console.log(id)
     if (id) {
-      axios.patch('/api/board/6/collaborators/',{
+      axios.patch(`/api/board/${lk}/collaborators/`,{
         collaborators: id,
       }, {
         headers: {
@@ -244,20 +243,23 @@ export default function Boardpage(){
     }
   }
 
-  async function clickedNo(){
+  function clickedNo(){
     setUserMessage('')
     setPopup(!popup)
   }
 
   async function showCollab(){
-    setShowCollaboratorsForm(!showCollaboratorsForm)
     const { data } = await axiosAuth.get('/api/auth/users/')
-    const newArray = board && board.collaborators.map((collabs,i) => {
-      if (data[i].id === collabs) return data[i].username
+    const newArray = []
+    data && data.map(( data) => {
+      board && board.collaborators.map((collabs,i) => {
+        if (data.id === collabs) newArray.push(data.username)
+      })
     })
     setShowCollaborators(newArray.map((collab,i) => {
-      if (collab[0]) return (collab)
+      return (collab)
     }))
+    setShowCollaboratorsForm(!showCollaboratorsForm)
   }
 
   function showColours(){
@@ -286,7 +288,7 @@ export default function Boardpage(){
           </div>
           <div>
             <button onClick={showCollab}>Show collaborators</button>
-            {showCollaboratorsForm ? showCollaborators && showCollaborators.map((collab,i) => <p key={i}>{collab}</p>) : <></>}
+            {showCollaboratorsForm ? showCollaborators && showCollaborators.map((collab,i) => (<p key={i}>{collab}</p>)) : <></>}
             <button onClick={e => showCollabForm()}>Add collaborator</button>
             <form className={collabForm ? 'show' : 'hide'} onSubmit={e => addedCollaborator(e)}>
               <input placeholder='Insert email here' type='email' value={collabName && collabName} autoComplete='off' onChange={e => (setCollabName(e.target.value), setCollabMessage(''))}></input>

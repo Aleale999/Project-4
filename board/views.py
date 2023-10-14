@@ -1,5 +1,5 @@
 
-from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView, ListCreateAPIView
+from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
 
 from .models import Board
 

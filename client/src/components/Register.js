@@ -29,7 +29,7 @@ export default function Register() {
       navigate('/')
     } catch (error) {
       console.log(error)
-      setMessage(error.response.data.detail)
+      setMessage(error.response.data.username)
     }
   }
 
