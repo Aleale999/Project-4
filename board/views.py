@@ -29,6 +29,11 @@ class BoardDetailView(RetrieveUpdateDestroyAPIView):
   serializer_class=PopulatedWithBoardList
   queryset = Board.objects.all()
   permission_classes=[IsCollaboratorOrOwner]
+  def delete(self, request, pk):
+    if self.get_object().owner == request.user:
+      self.get_object().delete()
+      return Response(status=204)
+    return Response(status=401)
 
 class BoardCollaboratorView(UpdateAPIView):
   serializer_class=BoardSerializer
@@ -37,8 +42,6 @@ class BoardCollaboratorView(UpdateAPIView):
   def patch(self, request, *args, **kwargs):
     collaborator = self.request.data.get('collaborators')
     board = self.get_object()
-    print(self.request.data)
-    print(type(collaborator))
     board.collaborators.add(collaborator)
     return Response(status=201)
   
