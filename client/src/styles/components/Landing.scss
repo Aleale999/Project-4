@@ -10,6 +10,7 @@ body{
 header{
   h1{
     color: rgb(136, 136, 136);
+    text-align: center;
   }
 }
 
@@ -32,12 +33,23 @@ header{
     justify-content: center;
     align-items: center;
     margin: 1vw;
+    font-size: 1.5em;
+    h3{
+      padding: 15px;
+      text-align: center;
+    }
   }
   :hover{
     background: radial-gradient(circle at 50% 50%, #797979 0%, #313131 25%, $bg-color 50%);
     opacity: 80%;
-    section{
+    h3{
       background: transparent;
+    }
+  }
+  @media screen and (min-width: 1201px){
+    a{
+      max-width: 270px;
+      max-height: 270px;
     }
   }
   @media screen and (max-width: 1200px) {

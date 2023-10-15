@@ -14,7 +14,12 @@ button{
 .board-container{
   margin-top: 30px;
   margin-left: 10px;
-  position: fixed;
+  overflow-x: auto;
+  max-width: 98vw;
+  margin-right: 5px;
+  ::-webkit-scrollbar{
+    width: 3px;
+  }
 }
 
 .show{
@@ -24,7 +29,6 @@ button{
 .boardpage-header{
   width: 100%;
   display: flex;
-  position: absolute;
   justify-content: space-around;
   input{
     background-color: rgba(63, 63, 63, 0.438);
@@ -55,10 +59,13 @@ button{
   top: 25%;
   bottom: 50%;
   margin: auto;
-  background: #2c2c2c48;
+  background: #2c2c2cce;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  h1{
+    color: #fff7e9;
+  }
   .button-container{
     display: flex;
     flex-direction: row;
@@ -101,11 +108,22 @@ button{
   display: flex;
   color: #fff7e9;
   margin-top: 10px;
+  ::-webkit-scrollbar{
+    width: 1px;
+  }
   .singlelist{
     background-color: rgba(70, 70, 70, 0.301);
     margin-left: 10px;
     min-width: 200px;
-    max-width: 100px;
+    max-width: 200px;
+    border-radius: 8px;
+    max-height: 80vh;
+    overflow-x: hidden;
+    .createcard{
+      border-radius: 0 0 8px 8px;
+      width: 200px;
+      margin-top: 0;
+    }
     .cards{
       
       div{
@@ -119,13 +137,14 @@ button{
           padding: 3px;
           width: 200px;
           border-radius: 5px;
+          margin-inline: 10px;
         }
       }
     }
   }
   input {
     background-color: rgba(63, 63, 63, 0.438);
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0;
     padding: 10px;
     color: #fff7e9;
     max-width: 100%;
@@ -134,11 +153,13 @@ button{
   }
   .createlist{
     height: 39px;
+    min-width: 140px;
   }
   form{
 
   }
 }
+
 
 .collaborators{
   background-color: rgba(63, 63, 63, 0.438);

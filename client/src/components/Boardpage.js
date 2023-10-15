@@ -135,6 +135,7 @@ export default function Boardpage(){
 
   function editlist(e,i){
     if (lists[i].name[0]) {
+      e.preventDefault()
       ck[i] && axios.patch(`/api/boardlists/${ck[i]}/`, {
         name: lists[i].name,
       },
@@ -155,6 +156,7 @@ export default function Boardpage(){
         },
       }
       )
+      setState(!state)
     }
     const newArray = [...showEditList]
     newArray[i] = !newArray[i]
@@ -218,6 +220,7 @@ export default function Boardpage(){
     // e.preventDefault()
     const id = editCard[i][j].id
     if (editCard[i][j].name) {
+      e.preventDefault()
       await axios.patch(`/api/cards/${id}/`, {
         name: editCard[i][j].name,
       },
@@ -300,7 +303,7 @@ export default function Boardpage(){
             </div>
           </div>
           <div className='collaborators-container'>
-            <button className='show-collaborators' onClick={showCollab}>Show collaborators</button>
+            <button className='show-collaborators' onClick={showCollab}>Collaborators List</button>
             <div className='collaborators'>
               {showCollaboratorsForm ? showCollaborators && showCollaborators.map((collab,i) => (<p key={i}>{collab}</p>)) : <></>}
             </div>
@@ -320,8 +323,8 @@ export default function Boardpage(){
                   <div key={list.id} className='singlelist'>
                     { showEditList[i] ?
                       <form onSubmit={e => editlist(e,i)}>
-                        <input id={i} placeholder={list.name && list.name} autoComplete='off' value={(list.name && list.name)} onChange={e => handleChange(e,i)}></input>
-                        <button type='submit'>Save changes</button>
+                        <input placeholder={list.name && list.name} autoComplete='off' value={(list.name && list.name)} onChange={e => handleChange(e,i)}></input>
+                        <button className='createcard' type='submit'>Save changes</button>
                       </form> :
                       <div className='list-title'>
                         <h3>{list.name}</h3>
@@ -338,7 +341,7 @@ export default function Boardpage(){
                                   {/* {card.id ? ['"name of the card" => ', card.name,' , "colours" => ', card.colours, ' , "Status " => ', card.status ? 'true' : 'false' ] : 'This list is empty'} */}
                                 </input>
                                 {/* <input type="checkbox" onClick={e => clickedCheck(card.status)}/> */}
-                                <button id={card.id} type='submit'>Save changes</button>
+                                <button className='createcard' type='submit'>Save changes</button>
                               </form> :
                               <p onClick={e => showedEditCard(e,i,j)} >{card.name}</p>
                             }
@@ -349,7 +352,7 @@ export default function Boardpage(){
                     <form onSubmit={e => submittedCard(e, i)}>
                       <input className={ appearCard[i] && appearCard[i] ? 'show' : 'hide'} autoComplete='off' onChange={e => setNewCard(e.target.value)} placeholder='New card'></input>
                     </form>
-                    <button onClick={e => createCard(e, i)}>Create new card</button>
+                    <button className='createcard' onClick={e => createCard(e, i)}>Create new card</button>
                   </div>
                 )
               })}

@@ -54,7 +54,7 @@ export default function Landing(){
         <>
           <div className='boards'>
             {userData && userData.map((data, i) => {
-              return <Link key={i} to={`/board/${data.id}`}><section>{data.name}</section></Link>
+              return <Link key={i} to={`/board/${data.id}`}><h3>{data.name}</h3></Link>
             })}
           </div>
           <div className='landing-div'>
