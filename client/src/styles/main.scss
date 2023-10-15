@@ -1,4 +1,9 @@
+@import './variables.scss';
 @import './components/Boardpage.scss';
+@import './components/Landing.scss';
+@import './components/Nav.scss';
+@import './components/Login.scss';
+@import './components/Register.scss';
 
 * {
   box-sizing: border-box;

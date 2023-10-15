@@ -1,0 +1,40 @@
+
+
+.loginDiv{
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+}
+
+.login{
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-flow: column;
+  width: 100%;
+  max-width: 30vw;
+  input{
+    padding: 5px;
+    margin: 0;
+    background-color: transparent;
+    border-radius: 5px;
+    padding: 10px;
+    color: #fff7e9;
+    width: 100%;
+  }
+  margin-bottom: 40px;
+}
+.register{
+  :hover{
+    background: radial-gradient(ellipse at 50% 50%, #797979 0%, #313131 25%, $bg-color 50%);
+    opacity: 80%;
+  }
+  a{
+    padding: 20px;
+    text-decoration: none;
+    color: white;
+  }
+}

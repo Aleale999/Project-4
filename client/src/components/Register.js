@@ -26,7 +26,7 @@ export default function Register() {
       const { data } = await axios.post('/api/auth/register/', formData)
       console.log(data)
       setMessage('Register was successful')
-      navigate('/')
+      navigate('/login')
     } catch (error) {
       console.log(error)
       setMessage(error.response.data.username)
@@ -34,17 +34,20 @@ export default function Register() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input autoComplete='off' type="text" placeholder='email' name="email" value={formData.email} onChange={handleChange} />
-      <br />
-      <input autoComplete='off' type="text" placeholder='username' name="username" value={formData.username} onChange={handleChange} />
-      <br />
-      <input autoComplete='off' type="password" placeholder='password' name="password" value={formData.password} onChange={handleChange}  />
-      <br />
-      <input autoComplete='off' type="password" placeholder='password confirmation' name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} />
-      <br />
-      {message && <p>{message}</p>}
-      <input type="submit" value="Submit" />
-    </form>
+    <div className='registerDiv'>
+      <h1>REGISTER</h1>
+      <form className='register-form'onSubmit={handleSubmit}>
+        <input autoComplete='off' type="text" placeholder='email' name="email" value={formData.email} onChange={handleChange} />
+        <br />
+        <input autoComplete='off' type="text" placeholder='username' name="username" value={formData.username} onChange={handleChange} />
+        <br />
+        <input autoComplete='off' type="password" placeholder='password' name="password" value={formData.password} onChange={handleChange}  />
+        <br />
+        <input autoComplete='off' type="password" placeholder='password confirmation' name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} />
+        <br />
+        {message && <p>{message}</p>}
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
   )
 }

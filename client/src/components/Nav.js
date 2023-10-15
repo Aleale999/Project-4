@@ -33,7 +33,7 @@ export default function Navigation() {
   }
 
   return ( 
-    <div>
+    <div className='nav-div'>
       <Navbar>
         {isAuth ? <Nav.Link href="/">Home</Nav.Link> : null}
         <Nav>

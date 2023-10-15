@@ -34,8 +34,9 @@ export default function Login() {
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
+    <div className='loginDiv'>
+      <h1>LOGIN</h1>
+      <form className='login' onSubmit={handleSubmit}>
         <input type="text" autoComplete='off' placeholder='username' name="username" value={formData.username} onChange={handleChange} />
         <br />
         <input type="password" autoComplete='off' placeholder='password' name="password" value={formData.password} onChange={handleChange}  />
@@ -43,7 +44,9 @@ export default function Login() {
         {message && <p>{message}</p>}
         <input type="submit" value="Submit" />
       </form>
-      <Link to={'/register'}>Click here to register</Link>
-    </>
+      <div className='register'>
+        <Link to={'/register'}>Click here to register</Link>
+      </div>
+    </div>
   )
 }

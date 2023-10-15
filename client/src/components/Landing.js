@@ -11,6 +11,7 @@ export default function Landing(){
   const [userData, setUserData] = useState()
   const [newBoard, setNewBoard] = useState('')
   const [appearBoard, setAppearBoard] = useState(false)
+  const [isAuth, setIsAuth] = useState(false)
 
   useEffect(() => {
     async function getData(){
@@ -18,6 +19,11 @@ export default function Landing(){
         const { data } = await axiosAuth.get('/api/board/')
         setUserData(data)
         setNewBoard()
+        if (localStorage.getItem('access-token')){
+          setIsAuth(true)
+        } else {
+          setIsAuth(false)
+        }
       } catch (error) {
         console.log(error.message)
       }
@@ -43,13 +49,24 @@ export default function Landing(){
 
   return (
     <>
-      {userData && userData.map((data, i) => {
-        return <Link key={i} to={`/board/${data.id}`}>{data.name}</Link>
-      })}
-      <button onClick={e => setAppearBoard(!appearBoard)}>Create new Board</button>
-      <form onSubmit={e => submittedBoard(e)}>
-        <input className={ appearBoard ? 'show' : 'hide'} value={newBoard && newBoard} autoComplete='off' onChange={e => setNewBoard(e.target.value)} placeholder='New Board'></input>
-      </form>
+      <header><h1>TRELLO MOCK</h1></header>
+      {isAuth ? 
+        <>
+          <div className='boards'>
+            {userData && userData.map((data, i) => {
+              return <Link key={i} to={`/board/${data.id}`}><section>{data.name}</section></Link>
+            })}
+          </div>
+          <div className='landing-div'>
+            <button onClick={e => setAppearBoard(!appearBoard)}>Create new Board</button>
+            <form className='landing-input' onSubmit={e => submittedBoard(e)}>
+              <input className={ appearBoard ? 'show create' : 'hide'} value={newBoard && newBoard} autoComplete='off' onChange={e => setNewBoard(e.target.value)} placeholder='New Board'></input>
+            </form>
+          </div>
+        </>
+        :
+        <h2>Log in an account to see the boards</h2>
+      }
     </>
   )
 }

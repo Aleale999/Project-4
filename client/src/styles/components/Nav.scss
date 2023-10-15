@@ -1,0 +1,16 @@
+.nav-link{
+  text-decoration: none;
+  color: $light-color;
+}
+
+.nav-div{
+  margin-top: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  .navbar{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+}

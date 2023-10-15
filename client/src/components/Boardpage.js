@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosAuth from '../lib/axios'
 import axios from 'axios'
@@ -26,6 +26,7 @@ export default function Boardpage(){
   const [owner, setOwner] = useState()
   const [user, setUser] = useState()
   const [userMessage, setUserMessage] = useState('')
+  const [state, setState] = React.useState(false)
 
   const [popup, setPopup] = useState(false)
   
@@ -73,7 +74,7 @@ export default function Boardpage(){
       }
     }
     getData()
-  }, [])
+  }, [state])
 
   function createList(){
     setAppearList(!appearList)
@@ -129,7 +130,6 @@ export default function Boardpage(){
     e.preventDefault()
     const newArray = [...lists]
     newArray[i].name = e.target.value
-    console.log(newArray)
     setLists(newArray)
   }
 
@@ -166,6 +166,7 @@ export default function Boardpage(){
   }
 
   async function addedCollaborator(e) {
+    e.preventDefault()
     setCollabMessage('')
     const { data } = await axiosAuth.get('/api/auth/users/')
     let id
@@ -186,6 +187,7 @@ export default function Boardpage(){
     } else {
       setCollabMessage('User Not Found')
     }
+    setState(!state)
     setCollabName('')
   }
 
@@ -213,17 +215,28 @@ export default function Boardpage(){
   }
 
   async function editedCard(e,i,j){
-    e.preventDefault()
+    // e.preventDefault()
     const id = editCard[i][j].id
-    await axios.patch(`/api/cards/${id}/`, {
-      name: editCard[i][j].name,
-    },
-    {
-      headers: {
-        'Authorization': `Bearer ${getToken('access-token')}`,
+    if (editCard[i][j].name) {
+      await axios.patch(`/api/cards/${id}/`, {
+        name: editCard[i][j].name,
       },
+      {
+        headers: {
+          'Authorization': `Bearer ${getToken('access-token')}`,
+        },
+      }
+      )
+    } else {
+      await axios.delete(`/api/cards/${id}/`,
+        {
+          headers: {
+            'Authorization': `Bearer ${getToken('access-token')}`,
+          },
+        }
+      )
     }
-    )
+    console.log(editCard[i][j].name)
     const newArray = [...showEditCard]
     newArray[i][j] = !newArray[i][j]
     setShowEditCard(newArray)
@@ -239,7 +252,7 @@ export default function Boardpage(){
       setPopup(!popup)
       navigate('/')
     } else {
-      setUserMessage('You are not the owner')
+      setUserMessage('You are not the owner of the board')
     }
   }
 
@@ -263,13 +276,13 @@ export default function Boardpage(){
   }
 
   function showColours(){
-    console.log('showing colours => ', colours)
+    console.log('Nothing yet')
   }
 
   return (
     <>
       <div>
-        <header>
+        <header className='boardpage-header'>
           <div>
             <button onClick={showColours}>Show colours</button>
           </div>
@@ -278,66 +291,76 @@ export default function Boardpage(){
             <div className={popup ? 'popup' : 'hidden'}>
               <div className={popup ? 'popup_inner' : 'hidden'}>
                 <h1 className={popup ? 'h1' : 'hidden'}>Are you sure you want to delete the board?</h1>
-                <div className='btn-container'>
-                  <button className={popup ? 'btn btn-sm btn-block' : 'hidden'} onClick={clickedYes}>Yes</button>
-                  <button className={popup ? 'btn btn-sm btn-block' : 'hidden'} onClick={clickedNo}>No</button>
+                <div className='button-container'>
+                  <button className={popup ? 'button btn-sm btn-block' : 'hidden'} onClick={clickedYes}>Yes</button>
+                  <button className={popup ? 'button btn-sm btn-block' : 'hidden'} onClick={clickedNo}>No</button>
                   {userMessage && <p>{userMessage}</p>}
                 </div>
               </div>
             </div>
           </div>
-          <div>
-            <button onClick={showCollab}>Show collaborators</button>
-            {showCollaboratorsForm ? showCollaborators && showCollaborators.map((collab,i) => (<p key={i}>{collab}</p>)) : <></>}
+          <div className='collaborators-container'>
+            <button className='show-collaborators' onClick={showCollab}>Show collaborators</button>
+            <div className='collaborators'>
+              {showCollaboratorsForm ? showCollaborators && showCollaborators.map((collab,i) => (<p key={i}>{collab}</p>)) : <></>}
+            </div>
             <button onClick={e => showCollabForm()}>Add collaborator</button>
             <form className={collabForm ? 'show' : 'hide'} onSubmit={e => addedCollaborator(e)}>
-              <input placeholder='Insert email here' type='email' value={collabName && collabName} autoComplete='off' onChange={e => (setCollabName(e.target.value), setCollabMessage(''))}></input>
+              <input placeholder='Insert email' type='email' value={collabName && collabName} autoComplete='off' onChange={e => (setCollabName(e.target.value), setCollabMessage(''))}></input>
               {collabMessage && <p>{collabMessage}</p>}
             </form>
           </div>
         </header>
-        <h1 style={{ textTransform: 'uppercase' }}>{title && title}</h1>
-        {lists && lists.map((list,i) => {
-          return (
-            <>
-              { showEditList[i] ?
-                <form key={i} onSubmit={e => editlist(e,i)}>
-                  <input id={i} placeholder={list.name && list.name} autoComplete='off' value={(list.name && list.name)} onChange={e => handleChange(e,i)}></input>
-                  <button type='submit'>Save changes?</button>
-                </form> :
-                <div>
-                  <h3>{list.name}</h3>
-                  <button onClick={e => showedEditList(i)}>✏️</button>
-                </div>
-              }
-              {cards[i] && cards[i].map((card,j) => {
+        <div className='board-container'>
+          <h1 style={{ textTransform: 'uppercase' }}>{title && title}</h1>
+          <div className='board'>
+            <div className='lists'>
+              {lists && lists.map((list,i) => {
                 return (
-                  <div key={card.id}>
-                    { showEditCard[i][j] ?
-                      <form onSubmit={e => editedCard(e,i,j)}>
-                        <input placeholder={card && card.name} value={editCard && editCard[i][j].name} onChange={e => changeEditCard(e,i,j)}>
-                          {/* {card.id ? ['"name of the card" => ', card.name,' , "colours" => ', card.colours, ' , "Status " => ', card.status ? 'true' : 'false' ] : 'This list is empty'} */}
-                        </input>
-                        {/* <input type="checkbox" onClick={e => clickedCheck(card.status)}/> */}
-                        <button id={card.id} type='submit'>✏️</button>
+                  <div key={list.id} className='singlelist'>
+                    { showEditList[i] ?
+                      <form onSubmit={e => editlist(e,i)}>
+                        <input id={i} placeholder={list.name && list.name} autoComplete='off' value={(list.name && list.name)} onChange={e => handleChange(e,i)}></input>
+                        <button type='submit'>Save changes</button>
                       </form> :
-                      <p onClick={e => showedEditCard(e,i,j)} >{card.name}</p>
+                      <div className='list-title'>
+                        <h3>{list.name}</h3>
+                        <button onClick={e => showedEditList(i)}>✏️</button>
+                      </div>
                     }
+                    <div className='cards'>
+                      {cards[i] && cards[i].map((card,j) => {
+                        return (
+                          <div key={card.id}>
+                            { showEditCard[i][j] ?
+                              <form onSubmit={e => editedCard(e,i,j)}>
+                                <input placeholder={card && card.name} value={editCard && editCard[i][j].name} onChange={e => changeEditCard(e,i,j)}>
+                                  {/* {card.id ? ['"name of the card" => ', card.name,' , "colours" => ', card.colours, ' , "Status " => ', card.status ? 'true' : 'false' ] : 'This list is empty'} */}
+                                </input>
+                                {/* <input type="checkbox" onClick={e => clickedCheck(card.status)}/> */}
+                                <button id={card.id} type='submit'>Save changes</button>
+                              </form> :
+                              <p onClick={e => showedEditCard(e,i,j)} >{card.name}</p>
+                            }
+                          </div>
+                        )
+                      })}
+                    </div>
+                    <form onSubmit={e => submittedCard(e, i)}>
+                      <input className={ appearCard[i] && appearCard[i] ? 'show' : 'hide'} autoComplete='off' onChange={e => setNewCard(e.target.value)} placeholder='New card'></input>
+                    </form>
+                    <button onClick={e => createCard(e, i)}>Create new card</button>
                   </div>
                 )
               })}
-              <button onClick={e => createCard(e, i)}>Create new card</button>
-              <form onSubmit={e => submittedCard(e, i)}>
-                <input className={ appearCard[i] && appearCard[i] ? 'show' : 'hide'} autoComplete='off' onChange={e => setNewCard(e.target.value)} placeholder='New card'></input>
-              </form>
-            </>
-          )
-        })}
+            </div>
+            <form onSubmit={e => submittedList(e)}>
+              <input className={appearList ? 'show' : 'hide'} value={newList && newList} autoComplete='off' onChange={e => setNewList(e.target.value)} placeholder='New list'></input>
+            </form>
+            <button className='createlist' onClick={e => createList()}>Create new list</button>
+          </div>
+        </div>
       </div>
-      <button onClick={e => createList()}>Create new list</button>
-      <form onSubmit={e => submittedList(e)}>
-        <input className={appearList ? 'show' : 'hide'} value={newList && newList} autoComplete='off' onChange={e => setNewList(e.target.value)} placeholder='New list'></input>
-      </form>
     </>
   )
 }

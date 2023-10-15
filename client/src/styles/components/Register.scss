@@ -1,0 +1,32 @@
+
+h1{
+  color: #fff7e9;
+}
+
+.registerDiv{
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+}
+
+.register-form{
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-flow: column;
+  width: 100%;
+  max-width: 30vw;
+  input{
+    padding: 5px;
+    margin: 0;
+    background-color: transparent;
+    border-radius: 5px;
+    padding: 10px;
+    color: #fff7e9;
+    width: 100%;
+  }
+  margin-bottom: 40px;
+}
