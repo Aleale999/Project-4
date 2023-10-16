@@ -285,7 +285,7 @@ export default function Boardpage(){
   return (
     <>
       <div>
-        <header className='boardpage-header'>
+        <div className='boardpage-header'>
           <div>
             <button onClick={showColours}>Show colours</button>
           </div>
@@ -294,26 +294,32 @@ export default function Boardpage(){
             <div className={popup ? 'popup' : 'hidden'}>
               <div className={popup ? 'popup_inner' : 'hidden'}>
                 <h1 className={popup ? 'h1' : 'hidden'}>Are you sure you want to delete the board?</h1>
-                <div className='button-container'>
-                  <button className={popup ? 'button btn-sm btn-block' : 'hidden'} onClick={clickedYes}>Yes</button>
-                  <button className={popup ? 'button btn-sm btn-block' : 'hidden'} onClick={clickedNo}>No</button>
+                <div>
+                  <div className='button-container'>
+                    <button className={popup ? 'button btn-sm btn-block' : 'hidden'} onClick={clickedYes}>Yes</button>
+                    <button className={popup ? 'button btn-sm btn-block' : 'hidden'} onClick={clickedNo}>No</button>
+                  </div>
                   {userMessage && <p>{userMessage}</p>}
                 </div>
               </div>
             </div>
           </div>
           <div className='collaborators-container'>
-            <button className='show-collaborators' onClick={showCollab}>Collaborators List</button>
-            <div className='collaborators'>
-              {showCollaboratorsForm ? showCollaborators && showCollaborators.map((collab,i) => (<p key={i}>{collab}</p>)) : <></>}
+            <div className='show-div'>
+              <button className='show-collaborators' onClick={showCollab}>Collaborators List</button>
+              <div className='collaborators'>
+                {showCollaboratorsForm ? showCollaborators && showCollaborators.map((collab,i) => (<p key={i}>{collab}</p>)) : <></>}
+              </div>
             </div>
-            <button onClick={e => showCollabForm()}>Add collaborator</button>
-            <form className={collabForm ? 'show' : 'hide'} onSubmit={e => addedCollaborator(e)}>
-              <input placeholder='Insert email' type='email' value={collabName && collabName} autoComplete='off' onChange={e => (setCollabName(e.target.value), setCollabMessage(''))}></input>
-              {collabMessage && <p>{collabMessage}</p>}
-            </form>
+            <div className='add-div'>
+              <button onClick={e => showCollabForm()}>Add collaborator</button>
+              <form className={collabForm ? 'show' : 'hide'} onSubmit={e => addedCollaborator(e)}>
+                <input placeholder='Insert email' type='email' value={collabName && collabName} autoComplete='off' onChange={e => (setCollabName(e.target.value), setCollabMessage(''))}></input>
+                {collabMessage && <p>{collabMessage}</p>}
+              </form>
+            </div>
           </div>
-        </header>
+        </div>
         <div className='board-container'>
           <h1 style={{ textTransform: 'uppercase' }}>{title && title}</h1>
           <div className='board'>
@@ -352,7 +358,7 @@ export default function Boardpage(){
                     <form onSubmit={e => submittedCard(e, i)}>
                       <input className={ appearCard[i] && appearCard[i] ? 'show' : 'hide'} autoComplete='off' onChange={e => setNewCard(e.target.value)} placeholder='New card'></input>
                     </form>
-                    <button className='createcard' onClick={e => createCard(e, i)}>Create new card</button>
+                    <button className='createcard createcardbtn' onClick={e => createCard(e, i)}>Create new card</button>
                   </div>
                 )
               })}

@@ -13,7 +13,7 @@ export default function App() {
   const token = localStorage.getItem('access-token')
 
   return (
-    <>
+    <div>
       <BrowserRouter>
         <header>
           <Navbar />
@@ -28,6 +28,6 @@ export default function App() {
           </Routes>
         </main>
       </BrowserRouter>
-    </>
+    </div>
   )
 }

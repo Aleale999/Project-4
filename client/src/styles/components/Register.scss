@@ -19,6 +19,7 @@ h1{
   flex-flow: column;
   width: 100%;
   max-width: 30vw;
+  min-width: 420px;
   input{
     padding: 5px;
     margin: 0;
@@ -27,6 +28,19 @@ h1{
     padding: 10px;
     color: #fff7e9;
     width: 100%;
+    min-width: 420px;  
   }
   margin-bottom: 40px;
+}
+
+@media screen and (max-width: 600px) {
+  .register-form{
+    width: 70vw;
+    max-width: 70vw;
+    min-width: 200px;
+    input{
+      width: 100%;
+      min-width: 200px;
+    }
+  }
 }

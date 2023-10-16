@@ -16,6 +16,7 @@
   flex-flow: column;
   width: 100%;
   max-width: 30vw;
+  min-width: 420px;
   input{
     padding: 5px;
     margin: 0;
@@ -29,12 +30,24 @@
 }
 .register{
   :hover{
-    background: radial-gradient(ellipse at 50% 50%, #797979 0%, #313131 25%, $bg-color 50%);
+    background: radial-gradient(ellipse at 50% 50%, #797979 0%, #313131 25%,  transparent 75%);
     opacity: 80%;
   }
   a{
     padding: 20px;
     text-decoration: none;
     color: white;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .login{
+    width: 70vw;
+    max-width: 70vw;
+    min-width: 200px;
+    input{
+      width: 100%;
+      min-width: 200px;
+    }
   }
 }

@@ -4,7 +4,7 @@
 body{
   box-sizing: border-box;
   margin: 0;
-  background-color: $bg-color;
+  background: $bg-color;
 }
 
 header{
@@ -88,8 +88,6 @@ button{
   display: flex;
   width: 100%;
   button{
-    margin: 0 10px 0 0;
-    width: 25vw;
     padding: 10px;
   }
   .landing-input{
@@ -99,9 +97,6 @@ button{
       border-radius: 5px;
       padding: 10px;
       color: #fff7e9;
-      max-width: 100%;
-      width: 40vw;
-      min-width: 300px;
     }
   }
 }
@@ -110,9 +105,7 @@ button{
   .landing-div{
     flex-wrap: wrap;
     justify-content: center;
-    button{
-      width: 300px;
-    }
+    flex-direction: column;
     @media screen and (max-width: 600px) {
       button{
         margin-bottom: 10px;
@@ -124,3 +117,94 @@ button{
     }
   }
 }
+
+@media screen and (min-width: 1201px){
+  .landing-div{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-items: center;
+    .landing-input{
+      width: 20vw;
+      margin: 1vw;
+      input{
+        max-width: 270px;
+        width: 100%;
+      }
+    }
+    button{
+      max-width: 270px;
+      width: 20vw;
+      margin: 1vw;
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .landing-div{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    .landing-input{
+      width: 25vw;
+      margin: 1vw;
+      input{
+        width: 25vw;
+        width: 100%;
+      }
+    }
+    button{
+      width: 25vw;
+      margin: 1vw;
+    }
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .landing{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+  .landing-div{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    button{
+      margin: 1vw;
+      width: 40vw;
+    }
+  }
+  .landing-input{
+    width: 40vw !important;
+    margin: 1vw;
+    input{
+      width: 40vw;
+    }
+  }
+}
+
+
+@media screen and (max-width: 767px) {
+  main{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+  .landing-div{
+    display: flex !important;
+    flex-flow: column;
+    align-items: center;
+    margin: 0;
+    button{
+      width: 70vw !important;
+    }
+  }
+  .landing-input{
+    width: 70vw !important;
+    input{
+      max-width: 70vw;
+      width: 70vw !important;
+    }
+  }
+}
+

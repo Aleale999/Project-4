@@ -1,3 +1,9 @@
 
-$bg-color:rgb(20, 20, 20);
+// $bg-color: rgb(20, 20, 20);
 $light-color:#fff7e9;
+
+body{
+  height: 99.5vh;
+}
+
+$bg-color: linear-gradient(to bottom right, rgb(10, 10, 10), rgb(70, 70, 70));

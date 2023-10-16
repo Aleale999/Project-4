@@ -48,7 +48,7 @@ export default function Landing(){
   } 
 
   return (
-    <>
+    <div className='landing'>
       <header><h1>TRELLO MOCK</h1></header>
       {isAuth ? 
         <>
@@ -67,6 +67,6 @@ export default function Landing(){
         :
         <h2>Log in an account to see the boards</h2>
       }
-    </>
+    </div>
   )
 }
